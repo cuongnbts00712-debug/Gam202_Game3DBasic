@@ -2,7 +2,6 @@
 
 public class IdleState : StateMachineBehaviour
 {
-    float time;
     Transform player; // Biến lưu vị trí (Transform) của Player
 
 
@@ -18,6 +17,7 @@ public class IdleState : StateMachineBehaviour
 
 
     }
+
 
     // Hàm này được gọi LIÊN TỤC mỗi frame khi enemy đang ở state Idle
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -38,4 +38,4 @@ public class IdleState : StateMachineBehaviour
 
         }
     }
-}
+ }

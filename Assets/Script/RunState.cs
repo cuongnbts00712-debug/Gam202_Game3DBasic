@@ -3,79 +3,59 @@ using UnityEngine.AI;
 
 public class RunState : StateMachineBehaviour
 {
-    NavMeshAgent agent;        // Điều khiển di chuyển enemy trên NavMesh
-    Animator animator;         // Điều khiển animation (Idle / Walk)
+    NavMeshAgent agent;
 
 
-    Transform[] waypoints;     // Danh sách các waypoint để tuần tra
-    int currentIndex;          // Chỉ số waypoint hiện tại
+    // Lưu Transform của Player để xác định vị trí và khoảng cách
+    Transform player;
 
 
-    public float walkSpeed = 2f;   // Tốc độ đi bộ khi tuần tra
+    // Khoảng cách để enemy ngừng đuổi và quay về trạng thái khác
+    public float stopChaseDistance = 15f;
 
 
-    void Start()
+    // Khoảng cách đủ gần để enemy chuyển sang trạng thái tấn công
+    public float attackDistance = 2.5f;
+
+
+    override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        agent = GetComponent<NavMeshAgent>();
-        // Lấy NavMeshAgent gắn trên Enemy (object cha)
+        // Lấy NavMeshAgent từ GameObject cha của Animator
+        agent = animator.transform.parent.GetComponent<NavMeshAgent>();
 
 
-        animator = GetComponentInChildren<Animator>();
-        // Lấy Animator nằm trong EnemyTPose (object con)
+        // Tìm Player theo tag và lấy Transform
+        player = GameObject.FindGameObjectWithTag("Player").transform;
 
 
-        GameObject wpParent = GameObject.FindGameObjectWithTag("WayPoints");
-        // Tìm object WayPoints bằng Tag
-
-
-        waypoints = new Transform[wpParent.transform.childCount];
-        // Tạo mảng waypoint với số lượng = số object con trong WayPoints
-
-
-        for (int i = 0; i < waypoints.Length; i++)
-        {
-            waypoints[i] = wpParent.transform.GetChild(i);
-            // Lưu từng waypoint con vào mảng
-        }
-
-
-        currentIndex = Random.Range(0, waypoints.Length);
-        // Chọn ngẫu nhiên 1 waypoint ban đầu
-
-
-        agent.speed = walkSpeed;
-        // Đặt tốc độ đi bộ cho enemy
-
-
-        agent.SetDestination(waypoints[currentIndex].position);
-        // Ra lệnh cho enemy bắt đầu đi tới waypoint
+        // Thiết lập tốc độ chạy cho enemy khi vào trạng thái Run
+        agent.speed = 5f;
     }
 
 
-    void Update()
+    override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        // ===== ĐIỀU KHIỂN ANIMATION =====
-        float speed = agent.velocity.magnitude;
-        // Lấy vận tốc hiện tại của NavMeshAgent
+        // Tính khoảng cách giữa Player và Enemy
+        float distance = Vector3.Distance(player.position, animator.transform.position);
 
 
-        animator.SetBool("isPatrolling", speed > 0.1f);
-        // Nếu enemy đang di chuyển → Walk
-        // Nếu đứng yên → Idle
+        // Cập nhật điểm đến để enemy luôn chạy theo Player
+        agent.SetDestination(player.position);
 
 
-        // ===== ĐIỀU KHIỂN DI CHUYỂN =====
-        if (!agent.pathPending && agent.remainingDistance < 0.5f)
+        // Nếu Player ra quá xa, enemy ngừng đuổi
+        if (distance > stopChaseDistance)
         {
-            // Khi enemy đã tới gần waypoint
+            // Tắt biến isChasing để rời trạng thái Run
+            animator.SetBool("isChasing", false);
+        }
 
 
-            currentIndex = Random.Range(0, waypoints.Length);
-            // Chọn waypoint mới ngẫu nhiên
-
-
-            agent.SetDestination(waypoints[currentIndex].position);
-            // Đi tiếp tới waypoint mới
+        // Nếu Player đủ gần để tấn công
+        if (distance < attackDistance)
+        {
+            // Bật biến isAttacking để chuyển sang state Attack
+            animator.SetBool("isAttacking", true);
         }
     }
 
