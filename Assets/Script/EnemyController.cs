@@ -59,7 +59,7 @@ public class EnemyController : MonoBehaviour
         // Lấy vận tốc hiện tại của NavMeshAgent
 
 
-        animator.SetBool("isPatrolling", speed > 0.1f);
+        animator.SetBool("IsPatrolling", speed > 0.1f);
         // Nếu enemy đang di chuyển → Walk
         // Nếu đứng yên → Idle
 
