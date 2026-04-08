@@ -63,9 +63,9 @@ public class EnemyController : MonoBehaviour
         // Nếu enemy đang di chuyển → Walk
         // Nếu đứng yên → Idle
 
-
+        
         // ===== ĐIỀU KHIỂN DI CHUYỂN =====
-        if (!agent.pathPending && agent.remainingDistance < 0.5f)
+        if (!agent.pathPending && agent.remainingDistance < 0.5f && !animator.GetBool("isAttacking"))
         {
             // Khi enemy đã tới gần waypoint
 

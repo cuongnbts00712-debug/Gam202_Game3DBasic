@@ -1819,6 +1819,7 @@ GameObject:
   - component: {fileID: 543641688}
   - component: {fileID: 543641694}
   - component: {fileID: 543641695}
+  - component: {fileID: 543641696}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -1834,7 +1835,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 543641686}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 446.639, y: 22, z: 414.681}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
@@ -1902,6 +1903,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyController
   walkSpeed: 2
+--- !u!114 &543641696
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 543641686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31742bc7be526714baf6b9921c315f85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AttributesManager
+  health: 50
+  attack: 10
+  isDead: 0
+  critDamage: 1.5
+  critChance: 0.5
 --- !u!1 &596116260
 GameObject:
   m_ObjectHideFlags: 0
@@ -2061,7 +2079,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 11489712, guid: 6488b6e6bbe8a9c4585b531a71d8211c, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -3034,15 +3053,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d763eb0c24b55074e8fd254b0ae18de5, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d763eb0c24b55074e8fd254b0ae18de5, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d763eb0c24b55074e8fd254b0ae18de5, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d763eb0c24b55074e8fd254b0ae18de5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -4357,6 +4376,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AttributesManager
   health: 100
   attack: 10
+  isDead: 0
   critDamage: 1.5
   critChance: 0.5
 --- !u!114 &1818130813
@@ -5062,7 +5082,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageTester
   player: {fileID: 1818130812}
-  enemy: {fileID: 0}
+  enemy: {fileID: 543641696}
 --- !u!4 &2102529203
 Transform:
   m_ObjectHideFlags: 0

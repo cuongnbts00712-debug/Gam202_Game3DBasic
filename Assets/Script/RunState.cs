@@ -30,6 +30,8 @@ public class RunState : StateMachineBehaviour
 
         // Thiết lập tốc độ chạy cho enemy khi vào trạng thái Run
         agent.speed = 5f;
+
+        animator.SetBool("isChasing", false);
     }
 
 
