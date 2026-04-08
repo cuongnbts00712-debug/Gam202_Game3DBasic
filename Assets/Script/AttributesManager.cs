@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class AttributesManager : MonoBehaviour
 {
@@ -29,6 +30,24 @@ public class AttributesManager : MonoBehaviour
     {
         // Trừ máu theo lượng sát thương nhận vào
         health -= amount;
+
+        if (gameObject.CompareTag("Enemy")) // nếu là kẻ thù
+        {
+            Slider slider = gameObject.transform
+                .GetChild(1).transform   // lấy tới canvas
+                .GetChild(0).transform   // lấy tới HealthBar
+                .GetComponent<Slider>(); // lấy component Slider
+
+
+            slider.value = health; // cập nhật giá trị slider
+
+
+            if (health <= 0) // khi máu bằng 0
+            {
+                EnemyDie();
+            }
+        }
+
 
         // Kiểm tra nếu máu <= 0 thì nhân vật chết
         if (health <= 0)
@@ -143,9 +162,9 @@ public class AttributesManager : MonoBehaviour
         // =======================
 
 
-        // Hủy enemy sau 2 giây
+        // Hủy enemy sau 4 giây
         // → Đủ thời gian cho animation chết chạy xong
-        Destroy(gameObject, 2f);
+        Destroy(gameObject, 4f);
 
     }
 
