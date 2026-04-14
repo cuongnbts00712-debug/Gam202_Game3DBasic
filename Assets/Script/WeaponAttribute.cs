@@ -18,6 +18,11 @@ public class WeaponAttributes : MonoBehaviour
             // - Logic chết
             atm.DealDamage(other.gameObject);
         }
+        if (other.CompareTag("Player"))
+        {
+            Debug.Log("Enemy chem Player");
+            atm.DealDamage(other.gameObject);
+        }
     }
 
 }

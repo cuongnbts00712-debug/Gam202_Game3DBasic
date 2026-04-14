@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.UI;
 
 public class AttributesManager : MonoBehaviour
 {
     public int health; // Máu hiện tại của nhân vật
 
-
+    public GameObject gemPrefab;
     public int attack;// Sát thương tấn công cơ bản
     public bool isDead = false; // Biến đánh dấu trạng thái chết của nhân vật
 
@@ -156,6 +157,16 @@ public class AttributesManager : MonoBehaviour
             animator.SetBool("isDead", true);
         }
 
+        // 5. SPAWN GEM
+        if (gemPrefab != null)
+        {
+            GameObject gem = Instantiate(
+                gemPrefab,
+                transform.position + Vector3.up * 0.5f,
+                Quaternion.identity
+            );
+            gem.SetActive(true);
+        }
 
         // =======================
         // 6. HỦY ENEMY
@@ -206,6 +217,42 @@ public class AttributesManager : MonoBehaviour
         // Truyền damage cuối cùng (đã tính crit nếu có)
         // Ép kiểu float → int trước khi trừ máu
         atm.TakeDamage((int)totalDamage);
+    }
+
+    void PlayerDie()
+    {
+        Debug.Log("Player Dead");
+
+
+        // Tắt controller
+        var cc = GetComponent<CharacterController>();
+        if (cc != null) cc.enabled = false;
+
+
+        // Tắt movement script khác
+        var scripts = GetComponents<MonoBehaviour>();
+        foreach (var s in scripts)
+        {
+            if (s != this) s.enabled = false;
+        }
+
+
+        // Play animation chết
+        Animator anim = GetComponentInChildren<Animator>();
+        if (anim != null)
+            anim.SetTrigger("Dead");
+
+
+        // Tắt NavMeshAgent an toàn
+        var agent = GetComponent<NavMeshAgent>();
+        if (agent != null && agent.isActiveAndEnabled && agent.isOnNavMesh)
+        {
+            agent.isStopped = true;
+        }
+
+
+        // Destroy object sau 3s
+        Destroy(gameObject, 3f);
     }
 
 }

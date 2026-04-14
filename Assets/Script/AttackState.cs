@@ -20,18 +20,36 @@ public class AttackState : StateMachineBehaviour
     }
 
 
+    // Cập nhật mỗi frame
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        // Tính khoảng cách giữa Player và Enemy
-        distance = Vector3.Distance(player.position, animator.transform.position);
+        // Kiểm tra player đã bị destroy chưa
+        if (player == null) return;       // biến null
+        if (!player) return;              // Unity Object bị Destroy (MissingReference)
 
 
-        // Nếu Player ra khỏi tầm đánh
+        // Tính khoảng cách
+        float distance = Vector3.Distance(animator.transform.position, player.position);
+
+
+        // Nếu Player ở xa, dừng tấn công
         if (distance > attackDistance)
         {
-            // Tắt biến isAttacking để rời trạng thái Attack
             animator.SetBool("isAttacking", false);
         }
+        else
+        {
+            // Nếu gần, bật tấn công
+            animator.SetBool("isAttacking", true);
+        }
+    }
+
+
+    // Nếu trạng thái kết thúc
+    override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        // Reset trigger/flag tấn công để tránh lỗi animation
+        animator.SetBool("isAttacking", false);
     }
 
 }
